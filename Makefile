@@ -7,6 +7,20 @@ GIT_COMMIT := $(or $(SOURCE_GIT_COMMIT),$(shell git rev-parse --short HEAD))
 OPM_VERSION := $(or $(SOURCE_GIT_TAG),$(shell git describe --always --tags HEAD))
 BUILD_DATE := $(shell date -u +'%Y-%m-%dT%H:%M:%SZ')
 
+registry_url = docker.io
+image_name = ${registry_url}/platform9/operator-registry
+DOCKERFILE?=$(CURDIR)/configmap-registry.Dockerfile
+UPSTREAM_VERSION?=$(shell git describe --tags HEAD | sed 's/-.*//' )
+image_tag = $(UPSTREAM_VERSION)-pmk-$(TEAMCITY_BUILD_ID)
+PF9_TAG=$(image_name):${image_tag}
+DOCKERARGS=
+ifdef HTTP_PROXY
+	DOCKERARGS += --build-arg http_proxy=$(HTTP_PROXY)
+endif
+ifdef HTTPS_PROXY
+	DOCKERARGS += --build-arg https_proxy=$(HTTPS_PROXY)
+endif
+
 # define characters
 null  :=
 space := $(null) #
@@ -114,3 +128,12 @@ clean:
 .PHONY: e2e
 e2e:
 	$(GO) run github.com/onsi/ginkgo/ginkgo --v --randomizeAllSpecs --randomizeSuites --race $(if $(TEST),-focus '$(TEST)') $(TAGS) ./test/e2e -- $(if $(SKIPTLS),-skip-tls true) 
+
+pf9-image: | $(CURDIR) ; $(info Building Docker image for pf9 Repo...) @ ## Build kube-rbac-proxy docker image
+	@docker build -t $(PF9_TAG) -f $(DOCKERFILE)  $(CURDIR) $(DOCKERARGS)
+	echo ${PF9_TAG} > $(CURDIR)/container-tag
+
+pf9-push: 
+	docker login
+	docker push $(PF9_TAG)\
+	&& docker rmi $(PF9_TAG)
