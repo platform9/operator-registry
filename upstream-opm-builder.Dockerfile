@@ -3,7 +3,7 @@
 ##             GoReleaser to build and push multi-arch images for opm
 ##
 
-FROM golang:1.16-alpine AS builder
+FROM golang:1.19-alpine AS builder
 
 RUN apk update && apk add sqlite build-base git mercurial bash
 WORKDIR /build
