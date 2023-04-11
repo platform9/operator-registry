@@ -4,8 +4,8 @@ go 1.19
 
 require (
 	github.com/blang/semver v3.5.1+incompatible
-	github.com/containerd/containerd v1.3.2
-	github.com/docker/cli v0.0.0-20200130152716-5d0cf8839492
+	github.com/containerd/containerd v1.4.13
+	github.com/docker/cli v20.10.12+incompatible
 	github.com/docker/distribution v2.7.1+incompatible
 	github.com/docker/docker v1.4.2-0.20200203170920-46ec8731fbce
 	github.com/ghodss/yaml v1.0.0
@@ -112,7 +112,6 @@ require (
 	github.com/modern-go/reflect2 v1.0.1 // indirect
 	github.com/morikuni/aec v0.0.0-20170113033406-39771216ff4c // indirect
 	github.com/nxadm/tail v1.4.4 // indirect
-	github.com/opencontainers/runc v0.1.1 // indirect
 	github.com/pelletier/go-toml v1.8.1 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/prometheus/client_golang v1.11.1 // indirect
@@ -148,13 +147,5 @@ require (
 	sigs.k8s.io/structured-merge-diff/v4 v4.0.3 // indirect
 )
 
-replace (
-	// Currently on a fork for two issues:
-	// 1. stage registry proxy didn't like requests with no scopes, see https://github.com/containerd/containerd/pull/4223
-	// 2. prod registry proxy returns a 403 on post, see https://github.com/containerd/containerd/pull/3913
-	// The fork can be removed when both issues are resolved in a release, which should be 1.4.0
-	github.com/containerd/containerd => github.com/ecordell/containerd v1.3.1-0.20200629153125-0ff1a1be2fa5
-
-	// latest tag resolves to a very old version. this is only used for spinning up local test registries
-	github.com/docker/distribution => github.com/docker/distribution v0.0.0-20191216044856-a8371794149d
-)
+// latest tag resolves to a very old version. this is only used for spinning up local test registries
+replace github.com/docker/distribution => github.com/docker/distribution v0.0.0-20191216044856-a8371794149d
