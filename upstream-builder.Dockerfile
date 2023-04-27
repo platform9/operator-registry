@@ -13,9 +13,6 @@ FROM alpine:3
 
 COPY ["nsswitch.conf", "/etc/nsswitch.conf"]
 
-RUN chgrp -R 0 /etc && \
-    chmod -R g+rwx /etc
-
 COPY --from=builder [ \
     "/bin/grpc_health_probe", \
     "/build/bin/opm", \
