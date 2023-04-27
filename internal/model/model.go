@@ -136,8 +136,9 @@ type Channel struct {
 }
 
 // TODO(joelanford): This function determines the channel head by finding the bundle that has 0
-//   incoming edges, based on replaces and skips. It also expects to find exactly one such bundle.
-//   Is this the correct algorithm?
+//
+//	incoming edges, based on replaces and skips. It also expects to find exactly one such bundle.
+//	Is this the correct algorithm?
 func (c Channel) Head() (*Bundle, error) {
 	incoming := map[string]int{}
 	for _, b := range c.Bundles {
