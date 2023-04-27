@@ -66,7 +66,7 @@ ifeq ($(shell go env GOARCH),amd64)
 endif
 
 .PHONY: static
-static: extra_flags=-ldflags '-w -extldflags "-static"' -tags "json1"
+static: extra_flags=-ldflags '-w -extldflags "-static"' -tags "json1" -buildvcs=false
 static: build
 
 .PHONY: unit
