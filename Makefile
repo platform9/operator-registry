@@ -9,7 +9,7 @@ export BUILD_DATE := $(shell date -u +'%Y-%m-%dT%H:%M:%SZ')
 
 registry_url = docker.io
 image_name = ${registry_url}/platform9/operator-registry
-DOCKERFILE?=$(CURDIR)/configmap-registry.Dockerfile
+DOCKERFILE?=$(CURDIR)/upstream-builder.Dockerfile
 UPSTREAM_VERSION?=$(shell git describe --tags HEAD | sed 's/-.*//' )
 image_tag = $(UPSTREAM_VERSION)-pmk-$(TEAMCITY_BUILD_ID)
 PF9_TAG=$(image_name):${image_tag}
